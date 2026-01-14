@@ -47,6 +47,3 @@ connectDb().then(() =>{
     });
 });//server should start after connecting database
 
-
-// sL3HrEnerqGQWBny
-// mongodb+srv://rohansingh23931_db_user:sL3HrEnerqGQWBny@cluster0.t4xwpeb.mongodb.net/?appName=Cluster0
