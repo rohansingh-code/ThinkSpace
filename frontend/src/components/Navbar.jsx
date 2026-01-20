@@ -10,7 +10,7 @@ function Navbar({ search, setSearch }) {
           
           {/* Logo */}
           <h1 className='text-3xl font-bold text-primary font-mono tracking-tight'>
-            Thinkboard
+            ThinkSpace
           </h1>
 
           {/* Search + Button */}
