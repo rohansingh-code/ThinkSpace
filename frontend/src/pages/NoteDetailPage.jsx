@@ -1,128 +1,142 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import api from "./lib/axios";
 import toast from "react-hot-toast";
-import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
+import { ArrowLeftIcon, Trash2Icon, PencilIcon } from "lucide-react";
 
 const NoteDetailPage = () => {
-  const [note, setNote] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const { id } = useParams();
+  const [note, setNote] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchNote = async () => {
+    async function fetchNote() {
       try {
         const res = await api.get(`/notes/${id}`);
         setNote(res.data);
-      } catch (error) {
-        console.log("Error in fetching note", error);
-        toast.error("Failed to fetch the note");
+      } catch {
+        toast.error("Failed to load note");
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     fetchNote();
   }, [id]);
 
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this note?")) return;
-
+  async function handleDelete() {
+    if (!window.confirm("Delete this note?")) return;
     try {
       await api.delete(`/notes/${id}`);
       toast.success("Note deleted");
       navigate("/");
-    } catch (error) {
-      console.log("Error deleting the note:", error);
+    } catch {
       toast.error("Failed to delete note");
     }
-  };
+  }
 
-  const handleSave = async () => {
+  async function handleSave() {
     if (!note.title.trim() || !note.content.trim()) {
-      toast.error("Please add a title or content");
+      toast.error("Title and content required");
       return;
     }
-
-    setSaving(true);
-
     try {
       await api.put(`/notes/${id}`, note);
-      toast.success("Note updated successfully");
-      navigate("/");
-    } catch (error) {
-      console.log("Error saving the note:", error);
+      toast.success("Note updated");
+      setIsEditing(false);
+    } catch {
       toast.error("Failed to update note");
-    } finally {
-      setSaving(false);
     }
-  };
+  }
 
+  // ✅ UPDATED LOADING UI (FULL SCREEN)
   if (loading) {
     return (
-      <div className="min-h-screen bg-base-200 flex items-center justify-center">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="min-h-screen flex items-center justify-center bg-base-200">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-base-200">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <Link to="/" className="btn btn-ghost">
-              <ArrowLeftIcon className="h-5 w-5" />
-              Back to Notes
-            </Link>
-            <button onClick={handleDelete} className="btn btn-error btn-outline">
-              <Trash2Icon className="h-5 w-5" />
-              Delete Note
+    <div className="min-h-screen bg-base-200 py-10 px-4">
+      <div className="max-w-3xl mx-auto bg-base-100 border border-base-300 rounded-md p-8">
+
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <Link to="/" className="btn btn-ghost btn-sm text-base-content/70">
+            <ArrowLeftIcon className="w-4" /> Back
+          </Link>
+
+          <div className="flex gap-2">
+            {!isEditing && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="btn btn-outline btn-sm"
+              >
+                <PencilIcon className="w-4" /> Edit
+              </button>
+            )}
+
+            <button
+              onClick={handleDelete}
+              className="btn btn-outline btn-error btn-sm"
+            >
+              <Trash2Icon className="w-4" /> Delete
             </button>
           </div>
-
-          <div className="card bg-base-100">
-            <div className="card-body">
-              <div className="form-control mb-4">
-                <label className="label">
-                  <span className="label-text">Title</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Note title"
-                  className="input input-bordered"
-                  value={note.title}
-                  onChange={(e) => setNote({ ...note, title: e.target.value })}
-                />
-              </div>
-
-              <div className="form-control mb-4">
-                <label className="label">
-                  <span className="label-text">Content</span>
-                </label>
-                <textarea
-                  placeholder="Write your note here..."
-                  className="textarea textarea-bordered h-32"
-                  value={note.content}
-                  onChange={(e) => setNote({ ...note, content: e.target.value })}
-                />
-              </div>
-
-              <div className="card-actions justify-end">
-                <button className="btn btn-primary" disabled={saving} onClick={handleSave}>
-                  {saving ? "Saving..." : "Save Changes"}
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
+
+        {/* Title */}
+        {isEditing ? (
+          <input
+            className="input input-bordered w-full text-xl font-semibold mb-4"
+            value={note.title}
+            onChange={(e) => setNote({ ...note, title: e.target.value })}
+          />
+        ) : (
+          <h1 className="text-3xl font-semibold mb-4">
+            {note.title}
+          </h1>
+        )}
+
+        {/* Content */}
+        {isEditing ? (
+          <textarea
+            className="textarea textarea-bordered w-full min-h-[220px]"
+            value={note.content}
+            onChange={(e) => setNote({ ...note, content: e.target.value })}
+          />
+        ) : (
+          <p className="whitespace-pre-wrap leading-relaxed text-base-content/80">
+            {note.content}
+          </p>
+        )}
+
+        {/* Save */}
+        {isEditing && (
+          <div className="flex justify-end mt-6 gap-2">
+            <button
+              onClick={() => setIsEditing(false)}
+              className="btn btn-ghost btn-sm"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleSave}
+              className="btn btn-primary btn-sm"
+            >
+              Save Changes
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
   );
 };
+
 export default NoteDetailPage;
