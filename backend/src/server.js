@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import rateLimiter from "./Middleware/rateLimiter.js";
 import cors from 'cors';
 import path from "path";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,7 @@ if(process.env.NODE_ENV !== "production"){
         }
     ));
 }
+app.use(cookieParser());
 app.use(rateLimiter);
 app.use(express.json());//allows us to parse JSON bodies,basically provides access to req.body
 
