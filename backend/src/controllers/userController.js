@@ -1,50 +1,62 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import generateToken from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/generateToken.js";
 
-//signup controller
+/* =========================
+   SIGNUP CONTROLLER
+========================= */
 export const userSignup = async (req, res) => {
   try {
     const { name, email, password } = req.body || {};
 
-    // 1. Required fields check
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // 2. Password validation
     if (password.length < 6) {
       return res
         .status(400)
         .json({ message: "Password must be at least 6 characters" });
     }
 
-    // 3. Normalize email
     const normalizedEmail = email.toLowerCase();
 
-    // 4. Check if user already exists
     const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) {
       return res.status(409).json({ message: "User already exists" });
     }
 
-    // 5. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 6. Create user
     const user = await User.create({
       name,
       email: normalizedEmail,
       password: hashedPassword,
     });
 
-    // 7. Generate JWT
-    const token = generateToken(user._id);
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
 
-    // 8. Send response WITH token
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(201).json({
       message: "User registered successfully",
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -57,13 +69,17 @@ export const userSignup = async (req, res) => {
   }
 };
 
-//login controller
+/* =========================
+   LOGIN CONTROLLER
+========================= */
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body || {};
 
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const normalizedEmail = email.toLowerCase();
@@ -78,11 +94,25 @@ export const userLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = generateToken(user._id);
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     return res.status(200).json({
       message: "Login successful",
-      token,
       user: {
         id: user._id,
         name: user.name,
@@ -95,4 +125,33 @@ export const userLogin = async (req, res) => {
   }
 };
 
+/* =========================
+   REFRESH TOKEN CONTROLLER
+========================= */
+export const refreshAccessToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
 
+    if (!refreshToken) {
+      return res.status(401).json({ message: "No refresh token" });
+    }
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET
+    );
+
+    const newAccessToken = generateAccessToken(decoded.userId);
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
+
+    return res.status(200).json({ message: "Access token refreshed" });
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid refresh token" });
+  }
+};
