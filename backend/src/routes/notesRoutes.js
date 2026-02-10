@@ -6,10 +6,10 @@ const router = express.Router();
 
 
 router.get("/",protect,getAllNotes);
-router.get("/:id",getNoteById);
-router.post("/",createNote);
-router.put("/:id",updateNote);
-router.delete("/:id",deleteNote);
+router.get("/:id",protect,getNoteById);
+router.post("/",protect,createNote);
+router.put("/:id",protect,updateNote);
+router.delete("/:id",protect,deleteNote);
 
 
 
