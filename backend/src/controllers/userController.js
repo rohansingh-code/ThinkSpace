@@ -155,3 +155,14 @@ export const refreshAccessToken = async (req, res) => {
     return res.status(401).json({ message: "Invalid refresh token" });
   }
 };
+
+/* =========================
+   LOGOUT CONTROLLER
+========================= */
+
+export const logout = (req,res) =>{
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+
+    return res.status(200).json({ message: "Logged out successfully" });
+};
