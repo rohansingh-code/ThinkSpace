@@ -7,6 +7,7 @@ import rateLimiter from "./Middleware/rateLimiter.js";
 import cors from 'cors';
 import path from "path";
 import cookieParser from "cookie-parser";
+import protect from "./Middleware/auth.middleware.js";
 
 dotenv.config();
 const app = express();
@@ -20,22 +21,19 @@ if(process.env.NODE_ENV !== "production"){
      app.use(cors(
         {
             origin: "http://localhost:5173",
+            credentials: true,
         }
     ));
 }
 app.use(cookieParser());
-app.use(rateLimiter);
 app.use(express.json());//allows us to parse JSON bodies,basically provides access to req.body
 
-app.use((req,res,next)=>{
-    console.log("we got a new req");
-    next();
-});//custom middleware
 
 
 //routes
-app.use("/api/notes",notesRoutes);
-app.use("/api/user",userRoutes);
+app.use("/api/users",userRoutes);
+app.use("/api/notes",rateLimiter,protect,notesRoutes);
+
 
 if(process.env.NODE_ENV === "production" ){
     app.use(express.static(path.join(__dirname,"../frontend/dist")));

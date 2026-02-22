@@ -1,8 +1,22 @@
-import React from 'react'
-import { PlusIcon, SearchIcon, BrainIcon } from 'lucide-react'
-import { Link } from 'react-router'
+import { PlusIcon, SearchIcon, BrainIcon, LogOutIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../store/authStore";
+import toast from "react-hot-toast";
 
 function Navbar({ search, setSearch }) {
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      navigate("/login", { replace: true });
+    } catch (err) {
+      toast.error("Logout failed");
+    }
+  };
+
   return (
     <header className="bg-base-100 border-b border-base-300">
       <div className="mx-auto max-w-6xl px-4 py-4">
@@ -17,7 +31,7 @@ function Navbar({ search, setSearch }) {
             </h1>
           </div>
 
-          {/* Search + Button */}
+          {/* Search + Button + User */}
           <div className="flex items-center gap-3 w-full md:w-auto">
 
             {/* Search */}
@@ -28,10 +42,7 @@ function Navbar({ search, setSearch }) {
                 placeholder="Search notes..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="
-                  input input-bordered w-full pl-9
-                  h-11 text-sm
-                "
+                className="input input-bordered w-full pl-9 h-11 text-sm"
               />
             </div>
 
@@ -44,11 +55,27 @@ function Navbar({ search, setSearch }) {
               <span className="hidden sm:inline">New Note</span>
             </Link>
 
+            {/* User + Logout */}
+            {user && (
+              <div className="flex items-center gap-3 ml-2">
+                <span className="hidden sm:inline text-sm font-medium">
+                  {user.name || user.email}
+                </span>
+
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-outline btn-error h-11 min-h-0 px-4"
+                >
+                  <LogOutIcon className="size-4" />
+                </button>
+              </div>
+            )}
+
           </div>
         </div>
       </div>
     </header>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
