@@ -10,68 +10,71 @@ function Navbar({ search, setSearch }) {
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success("Logged out successfully");
+      toast.success("Logged out");
       navigate("/login", { replace: true });
-    } catch (err) {
+    } catch {
       toast.error("Logout failed");
     }
   };
 
   return (
-    <header className="bg-base-100 border-b border-base-300">
-      <div className="mx-auto max-w-6xl px-4 py-4">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <header className="border-b border-white/[0.06] bg-[#0a0a0a]/80 backdrop-blur-xl sticky top-0 z-40">
+      <div className="mx-auto max-w-6xl px-5 py-3.5">
+        <div className="flex items-center justify-between gap-4">
 
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <BrainIcon className="size-7 text-primary" />
-            <h1 className="text-2xl font-semibold tracking-tight leading-none">
-              <span className="text-primary">Think</span>
-              <span className="text-base-content">Space</span>
-            </h1>
+          <Link to="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="size-10 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center group-hover:bg-violet-600/30 transition-colors duration-200">
+              <BrainIcon className="size-5 text-violet-400" />
+            </div>
+            <span className="text-[22px] font-semibold tracking-tight text-white/90" style={{ fontFamily: "'Instrument Serif', serif" }}>
+              Think<span className="text-violet-400">Space</span>
+            </span>
+          </Link>
+
+          {/* Search */}
+          <div className="relative flex-1 max-w-sm">
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-white/25" />
+            <input
+              type="text"
+              placeholder="Search notes..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full h-9 pl-9 pr-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[13px] text-white/80 placeholder:text-white/25 outline-none focus:border-violet-500/40 focus:bg-white/[0.06] transition-all duration-200"
+            />
           </div>
 
-          {/* Search + Button + User */}
-          <div className="flex items-center gap-3 w-full md:w-auto">
-
-            {/* Search */}
-            <div className="relative w-full md:w-80">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-base-content/50" />
-              <input
-                type="text"
-                placeholder="Search notes..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="input input-bordered w-full pl-9 h-11 text-sm"
-              />
-            </div>
-
-            {/* Add Note */}
+          {/* Actions */}
+          <div className="flex items-center gap-3 shrink-0">
             <Link
               to="/create"
-              className="btn btn-primary h-11 min-h-0 px-5"
+              className="flex items-center gap-2 h-9 px-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-[13px] font-medium transition-colors duration-200"
             >
-              <PlusIcon className="size-4" />
+              <PlusIcon className="size-3.5" />
               <span className="hidden sm:inline">New Note</span>
             </Link>
 
-            {/* User + Logout */}
             {user && (
-              <div className="flex items-center gap-3 ml-2">
-                <span className="hidden sm:inline text-sm font-medium">
-                  {user.name || user.email}
-                </span>
+              <div className="flex items-center gap-2.5">
+                <div className="hidden sm:flex items-center gap-2">
+                  <div className="size-7 rounded-full bg-violet-600/30 border border-violet-500/30 flex items-center justify-center text-[11px] font-semibold text-violet-300">
+                    {(user.name || user.email || "U")[0].toUpperCase()}
+                  </div>
+                  <span className="text-[12px] text-white/40 max-w-[100px] truncate">
+                    {user.name || user.email}
+                  </span>
+                </div>
 
                 <button
                   onClick={handleLogout}
-                  className="btn btn-outline btn-error h-11 min-h-0 px-4"
+                  className="size-9 flex items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-red-500/10 hover:border-red-500/30 text-white/40 hover:text-red-400 transition-all duration-200"
                 >
-                  <LogOutIcon className="size-4" />
+                  <LogOutIcon className="size-3.5" />
                 </button>
               </div>
             )}
-
           </div>
+
         </div>
       </div>
     </header>

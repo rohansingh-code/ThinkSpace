@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { PenSquareIcon, Trash2Icon } from "lucide-react";
+import { Trash2Icon, SparklesIcon } from "lucide-react";
 import { formatDate } from '../pages/lib/utils.js';
 import api from '../pages/lib/axios.js';
 import toast from 'react-hot-toast';
@@ -9,59 +9,76 @@ const NoteCard = ({ note, setNotes }) => {
   const handleDelete = async (e, id) => {
     e.preventDefault();
     if (!window.confirm("Are you sure you want to delete this note?")) return;
-
     try {
       await api.delete(`/notes/${id}`);
       setNotes(prev => prev.filter(note => note._id !== id));
-      toast.success("Note deleted successfully");
+      toast.success("Note deleted");
     } catch {
       toast.error("Failed to delete note");
     }
   };
 
+  const hasTags = note.tags && note.tags.length > 0;
+  const hasSummary = note.summary && note.summary.trim() !== "";
+
   return (
     <Link
       to={`/note/${note._id}`}
-      className="
-        card bg-base-100 border border-base-300
-        hover:border-primary/40
-        hover:bg-base-200/30
-        transition-colors duration-150
-      "
+      className="note-card group block rounded-2xl border border-white/[0.06] bg-[#111111] hover:bg-[#161616] hover:border-white/[0.12] transition-all duration-300 overflow-hidden"
+      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03)' }}
     >
-      <div className="card-body p-5 flex flex-col gap-3">
+      {/* Top accent line */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-violet-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        {/* Title (COLORED) */}
-        <h3 className="text-lg font-semibold leading-snug text-primary">
+      <div className="p-5 flex flex-col gap-3">
+
+        {/* Title */}
+        <h3 className="font-semibold text-[15px] leading-snug text-white/90 group-hover:text-white transition-colors duration-200 line-clamp-2" style={{ fontFamily: "'Instrument Serif', serif" }}>
           {note.title}
         </h3>
 
-        {/* Content */}
-        <p className="text-sm text-base-content/70 line-clamp-3">
+        {/* AI Summary */}
+        {hasSummary && (
+          <div className="flex items-start gap-1.5">
+            <SparklesIcon className="size-3 text-violet-400/70 mt-0.5 shrink-0" />
+            <p className="text-[12px] text-white/40 leading-relaxed line-clamp-2 italic">
+              {note.summary}
+            </p>
+          </div>
+        )}
+
+        {/* Content preview */}
+        <p className="text-[13px] text-white/55 leading-relaxed line-clamp-3">
           {note.content}
         </p>
 
+        {/* Tags */}
+        {hasTags && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {note.tags.map((tag, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide border border-violet-500/20 bg-violet-500/[0.08] text-violet-300/70"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+
         {/* Footer */}
-        <div className="flex items-center justify-between mt-4">
-          
-          <span className="text-xs text-base-content/50">
+        <div className="flex items-center justify-between pt-2 border-t border-white/[0.05]">
+          <span className="text-[11px] text-white/25 tracking-wide">
             {formatDate(new Date(note.createdAt))}
           </span>
 
-          <div className="flex items-center gap-2">
-            <PenSquareIcon className="size-4 text-base-content/40" />
-
-            <button
-              className="
-                btn btn-ghost btn-xs text-error
-                hover:bg-error/10
-              "
-              onClick={(e) => handleDelete(e, note._id)}
-            >
-              <Trash2Icon className="size-4" />
-            </button>
-          </div>
-
+          <button
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 text-[11px] text-red-400/70 hover:text-red-400 px-2 py-1 rounded-lg hover:bg-red-500/10"
+            onClick={(e) => handleDelete(e, note._id)}
+          >
+            <Trash2Icon className="size-3" />
+            Delete
+          </button>
         </div>
       </div>
     </Link>
