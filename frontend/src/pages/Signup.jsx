@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import toast from "react-hot-toast";
+import { BrainIcon } from "lucide-react";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,68 +15,75 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!name || !email || !password) {
       toast.error("Please fill all fields");
       return;
     }
-
     try {
       setLoading(true);
       await signup({ name, email, password });
       toast.success("Account created successfully");
       navigate("/", { replace: true });
     } catch (err) {
-      toast.error(
-        err?.response?.data?.message || "Signup failed"
-      );
+      toast.error(err?.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card w-96 bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title justify-center text-2xl">Signup</h2>
+    <div className="min-h-screen bg-[#080808] flex items-center justify-center px-4">
+
+      {/* Ambient glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[400px] rounded-full bg-violet-600/10 blur-[100px] pointer-events-none" />
+
+      <div className="relative w-full max-w-sm">
+
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8 gap-3">
+          <div className="size-12 rounded-2xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center">
+            <BrainIcon className="size-6 text-violet-400" />
+          </div>
+          <h1 className="text-[26px] font-semibold text-white/90" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            Think<span className="text-violet-400">Space</span>
+          </h1>
+        </div>
+
+        {/* Card */}
+        <div className="rounded-2xl border border-white/[0.07] bg-white/[0.03] p-7">
+          <h2 className="text-[17px] font-semibold text-white/80 mb-1">Create an account</h2>
+          <p className="text-[12px] text-white/30 mb-6">Start capturing your thoughts with AI</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Name</span>
-              </label>
+            <div className="space-y-1.5">
+              <label className="text-[11px] uppercase tracking-widest text-white/25 font-medium">Name</label>
               <input
                 type="text"
-                className="input input-bordered"
-                placeholder="Enter your name"
+                placeholder="Your name"
+                className="w-full h-10 px-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[13px] text-white/80 placeholder:text-white/20 outline-none focus:border-violet-500/40 focus:bg-white/[0.06] transition-all duration-200"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
+            <div className="space-y-1.5">
+              <label className="text-[11px] uppercase tracking-widest text-white/25 font-medium">Email</label>
               <input
                 type="email"
-                className="input input-bordered"
-                placeholder="Enter your email"
+                placeholder="you@example.com"
+                className="w-full h-10 px-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[13px] text-white/80 placeholder:text-white/20 outline-none focus:border-violet-500/40 focus:bg-white/[0.06] transition-all duration-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Password</span>
-              </label>
+            <div className="space-y-1.5">
+              <label className="text-[11px] uppercase tracking-widest text-white/25 font-medium">Password</label>
               <input
                 type="password"
-                className="input input-bordered"
-                placeholder="Enter your password"
+                placeholder="••••••••"
+                className="w-full h-10 px-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[13px] text-white/80 placeholder:text-white/20 outline-none focus:border-violet-500/40 focus:bg-white/[0.06] transition-all duration-200"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -83,22 +91,23 @@ const Signup = () => {
 
             <button
               type="submit"
-              className={`btn btn-primary w-full ${loading ? "loading" : ""}`}
               disabled={loading}
+              className="w-full h-10 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[13px] font-medium transition-colors duration-200 flex items-center justify-center gap-2 mt-2"
             >
-              Signup
+              {loading && <div className="size-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />}
+              {loading ? "Creating account..." : "Create account"}
             </button>
 
           </form>
-
-          <p className="text-center mt-4">
-            Already have an account?{" "}
-            <Link to="/login" className="link link-primary">
-              Login
-            </Link>
-          </p>
-
         </div>
+
+        <p className="text-center mt-5 text-[12px] text-white/25">
+          Already have an account?{" "}
+          <Link to="/login" className="text-violet-400/80 hover:text-violet-400 transition-colors duration-200">
+            Sign in
+          </Link>
+        </p>
+
       </div>
     </div>
   );
