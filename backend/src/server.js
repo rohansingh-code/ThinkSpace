@@ -32,7 +32,7 @@ app.use(express.json());//allows us to parse JSON bodies,basically provides acce
 
 //routes
 app.use("/api/users",userRoutes);
-app.use("/api/notes",protect,rateLimiter,notesRoutes);
+app.use("/api/notes",protect,notesRoutes);
 
 
 if(process.env.NODE_ENV === "production" ){

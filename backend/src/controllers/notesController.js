@@ -1,4 +1,5 @@
 import Note from "../models/Note.js";
+import { processNoteWithAI } from "../ai/aiService.js";
 
 export const getAllNotes = async (req,res) =>{
     try {
@@ -30,15 +31,22 @@ export const getNoteById = async (req, res) => {
 
 export const createNote = async (req,res) =>{
     try {
+
        const {title,content} = req.body;
-       console.log(title,content);
+
+       // AI processing
+       const aiData = await processNoteWithAI(content);
+
        const note = await Note.create({
-            title,
+            title: title || aiData.title || "Untitled",
             content,
-            user: req.user._id, // linking note with user
+            summary: aiData.summary,
+            tags: aiData.tags,
+            user: req.user._id,
         });
 
        res.status(201).json(note);
+
     } catch (error) {
         console.error("Error in createNote method",error);
         res.status(500).json({message:"Internal server error"});        
@@ -48,12 +56,20 @@ export const updateNote = async (req, res) => {
   try {
     const { title, content } = req.body;
 
+    // Regenerate AI metadata on update
+    const aiData = await processNoteWithAI(content);
+
     const updatedNote = await Note.findOneAndUpdate(
       { 
         _id: req.params.id, 
         user: req.user._id 
       },
-      { title, content },
+      { 
+        title: aiData.title || "Untitled",
+        content,
+        summary: aiData.summary,
+        tags: aiData.tags,
+      },
       { new: true }
     );
 
@@ -61,7 +77,7 @@ export const updateNote = async (req, res) => {
       return res.status(404).json({ message: "note not found" });
     }
 
-    return res.status(200).json({ message: "Note updated succesfully!" });
+    return res.status(200).json(updatedNote); // ← return full note, not just a message
   } catch (error) {
     console.error("Error in updateNote method", error);
     return res.status(500).json({ message: "Internal server error" });
