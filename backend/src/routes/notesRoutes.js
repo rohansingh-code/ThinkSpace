@@ -6,17 +6,16 @@ import {
   updateNote,
   getNoteById
 } from "../controllers/notesController.js";
-
-import rateLimiter from "../Middleware/rateLimiter.js";
+import { apiLimiter, geminiLimiter } from "../Middleware/rateLimiter.js";
 
 const router = express.Router();
 
-router.get("/", getAllNotes);
-router.get("/:id", getNoteById);
+router.get("/", apiLimiter, getAllNotes);
+router.get("/:id", apiLimiter, getNoteById);
 
-router.post("/", rateLimiter, createNote);
-router.put("/:id", rateLimiter, updateNote);
+router.post("/", apiLimiter, createNote);
+router.put("/:id", geminiLimiter, updateNote);  // if update uses Gemini
 
-router.delete("/:id", deleteNote);
+router.delete("/:id", apiLimiter, deleteNote);
 
 export default router;
