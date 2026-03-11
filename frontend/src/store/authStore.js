@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import api from "../pages/lib/axios";
+import api from "../lib/axios";
 
 const useAuthStore = create((set) => ({
   user: null,

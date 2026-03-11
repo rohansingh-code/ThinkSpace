@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import api from "./lib/axios";
+import api from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { ArrowLeftIcon, Trash2Icon, PencilIcon, SparklesIcon, CheckIcon, XIcon } from "lucide-react";
-import { formatDate } from "./lib/utils.js";
+import { formatDate } from "../lib/utils.js";
 
 const NoteDetailPage = () => {
   const { id } = useParams();

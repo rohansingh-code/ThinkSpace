@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { Trash2Icon, SparklesIcon } from "lucide-react";
-import { formatDate } from '../pages/lib/utils.js';
-import api from '../pages/lib/axios.js';
+import { formatDate } from '../lib/utils.js';
+import api from '../lib/axios.js';
 import toast from 'react-hot-toast';
 
 const NoteCard = ({ note, setNotes }) => {
