@@ -16,28 +16,37 @@ const __dirname = path.resolve();
 
 
 if (process.env.NODE_ENV !== "production") {
-  app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    })
+  );
 }
+
 app.use(cookieParser());
 app.use(express.json());
 
 
-app.use("/api/users", userRoutes);          
-app.use("/api/notes", protect, notesRoutes); 
+app.use("/api/users", userRoutes);
+app.use("/api/notes", protect, notesRoutes);
 
+
+app.get("/api/health", (req, res) => {
+  res.send("Server running");
+});
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
   });
 }
 
+
 connectDb().then(() => {
   app.listen(PORT, () => {
-    console.log("server started on port 5001");
+    console.log(`Server started on port ${PORT}`);
   });
 });
