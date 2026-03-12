@@ -28,24 +28,20 @@ const Homepage = () => {
         setLoading(false);
       }
     };
-
     fetchNotes();
   }, []);
 
   const filteredNotes = useMemo(() => {
     if (!search.trim()) return notes;
-
     return notes.filter(
       (note) =>
         note.title.toLowerCase().includes(search.toLowerCase()) ||
-        note.tags?.some((tag) =>
-          tag.toLowerCase().includes(search.toLowerCase())
-        )
+        note.tags?.some((tag) => tag.toLowerCase().includes(search.toLowerCase()))
     );
   }, [notes, search]);
 
   return (
-    <div className="min-h-screen bg-[#080808]">
+    <div className="min-h-screen bg-[#0a0a0a]">
       <Navbar search={search} setSearch={setSearch} />
 
       {isRateLimited && <RateLimitedUI />}
@@ -61,7 +57,6 @@ const Homepage = () => {
               >
                 {search ? "Search results" : "Your notes"}
               </h2>
-
               <p className="text-[13px] text-white/30">
                 {filteredNotes.length}{" "}
                 {filteredNotes.length === 1 ? "note" : "notes"}
@@ -76,15 +71,15 @@ const Homepage = () => {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-white/[0.05] bg-[#111111] p-5 space-y-3"
+                className="rounded-2xl border border-yellow-600/10 bg-[#111100] p-5 space-y-3"
               >
-                <div className="h-4 w-3/4 rounded-lg bg-white/[0.06] animate-pulse" />
-                <div className="h-3 w-full rounded-lg bg-white/[0.04] animate-pulse" />
-                <div className="h-3 w-5/6 rounded-lg bg-white/[0.04] animate-pulse" />
-                <div className="h-3 w-4/6 rounded-lg bg-white/[0.03] animate-pulse" />
+                <div className="h-4 w-3/4 rounded-lg bg-yellow-500/[0.06] animate-pulse" />
+                <div className="h-3 w-full rounded-lg bg-yellow-500/[0.04] animate-pulse" />
+                <div className="h-3 w-5/6 rounded-lg bg-yellow-500/[0.04] animate-pulse" />
+                <div className="h-3 w-4/6 rounded-lg bg-yellow-500/[0.03] animate-pulse" />
                 <div className="flex gap-2 pt-2">
-                  <div className="h-5 w-12 rounded-full bg-white/[0.04] animate-pulse" />
-                  <div className="h-5 w-16 rounded-full bg-white/[0.04] animate-pulse" />
+                  <div className="h-5 w-12 rounded-full bg-yellow-500/[0.05] animate-pulse" />
+                  <div className="h-5 w-16 rounded-full bg-yellow-500/[0.05] animate-pulse" />
                 </div>
               </div>
             ))}
@@ -101,16 +96,9 @@ const Homepage = () => {
               <div
                 key={note._id}
                 className="animate-fade-in"
-                style={{
-                  animationDelay: `${i * 40}ms`,
-                  animationFillMode: "both",
-                }}
+                style={{ animationDelay: `${i * 40}ms`, animationFillMode: "both" }}
               >
-                <NoteCard
-                  note={note}
-                  setNotes={setNotes}
-                  setSearch={setSearch}
-                />
+                <NoteCard note={note} setNotes={setNotes} setSearch={setSearch} />
               </div>
             ))}
           </div>

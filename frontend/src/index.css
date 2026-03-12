@@ -11,8 +11,8 @@
   }
 
   body {
-    background-color: #080808;
-    color: rgba(255, 255, 255, 0.8);
+    background-color: #0a0a0a;
+    color: rgba(212, 175, 55, 0.9);
   }
 
   * {
@@ -28,12 +28,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(212, 175, 55, 0.2);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(212, 175, 55, 0.4);
   }
 }
 

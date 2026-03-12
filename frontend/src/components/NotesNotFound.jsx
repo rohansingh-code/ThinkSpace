@@ -7,9 +7,9 @@ const NotesNotFound = () => {
 
       {/* Icon */}
       <div className="relative">
-        <div className="absolute inset-0 rounded-full bg-violet-500/10 blur-xl scale-150" />
-        <div className="relative size-16 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
-          <NotebookIcon className="size-7 text-violet-400/60" />
+        <div className="absolute inset-0 rounded-full bg-yellow-500/10 blur-xl scale-150" />
+        <div className="relative size-16 rounded-2xl bg-yellow-500/[0.06] border border-yellow-500/20 flex items-center justify-center">
+          <NotebookIcon className="size-7 text-yellow-400/60" />
         </div>
       </div>
 
@@ -26,7 +26,7 @@ const NotesNotFound = () => {
       {/* Action */}
       <Link
         to="/create"
-        className="flex items-center gap-2 h-9 px-5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-[13px] font-medium transition-colors duration-200"
+        className="flex items-center gap-2 h-9 px-5 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-black text-[13px] font-medium transition-colors duration-200"
       >
         Create your first note
       </Link>

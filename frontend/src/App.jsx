@@ -20,7 +20,7 @@ const App = () => {
     <div className="relative h-full w-full">
       <div
         className="absolute inset-0 -z-10 h-full w-full px-5 py-24
-        [background:radial-gradient(140%_120%_at_50%_10%,#171717_65%,#000_100%)]"
+        [background:radial-gradient(140%_120%_at_50%_10%,#1a1400_65%,#0a0a00_100%)]"
       />
 
       <Routes>
