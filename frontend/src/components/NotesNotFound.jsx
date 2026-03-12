@@ -5,7 +5,6 @@ const NotesNotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center py-32 space-y-5 max-w-md mx-auto text-center">
 
-      {/* Icon */}
       <div className="relative">
         <div className="absolute inset-0 rounded-full bg-yellow-500/10 blur-xl scale-150" />
         <div className="relative size-16 rounded-2xl bg-yellow-500/[0.06] border border-yellow-500/20 flex items-center justify-center">
@@ -13,17 +12,15 @@ const NotesNotFound = () => {
         </div>
       </div>
 
-      {/* Title */}
       <h3 className="text-xl font-semibold text-white/80" style={{ fontFamily: "'Instrument Serif', serif" }}>
         No notes yet
       </h3>
 
-      {/* Description */}
+
       <p className="text-[13px] text-white/30 leading-relaxed">
         Start capturing your thoughts and ideas by creating your first note.
       </p>
 
-      {/* Action */}
       <Link
         to="/create"
         className="flex items-center gap-2 h-9 px-5 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-black text-[13px] font-medium transition-colors duration-200"

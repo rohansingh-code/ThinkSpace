@@ -34,12 +34,12 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
 
-      {/* Ambient glow */}
+
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[400px] rounded-full bg-yellow-600/8 blur-[100px] pointer-events-none" />
 
       <div className="relative w-full max-w-sm">
 
-        {/* Logo */}
+
         <div className="flex flex-col items-center mb-8 gap-3">
           <div className="size-12 rounded-2xl bg-yellow-600/20 border border-yellow-500/30 flex items-center justify-center">
             <BrainIcon className="size-6 text-yellow-400" />
@@ -49,7 +49,7 @@ const Signup = () => {
           </h1>
         </div>
 
-        {/* Card */}
+
         <div className="rounded-2xl border border-yellow-600/15 bg-white/[0.03] p-7">
           <h2 className="text-[17px] font-semibold text-white/80 mb-1">Create an account</h2>
           <p className="text-[12px] text-white/30 mb-6">Start capturing your thoughts with AI</p>

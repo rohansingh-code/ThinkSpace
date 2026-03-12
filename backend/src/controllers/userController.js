@@ -6,9 +6,7 @@ import {
   generateRefreshToken,
 } from "../utils/generateToken.js";
 
-/* =========================
-   SIGNUP CONTROLLER
-========================= */
+
 export const userSignup = async (req, res) => {
   try {
     const { name, email, password } = req.body || {};
@@ -69,9 +67,6 @@ export const userSignup = async (req, res) => {
   }
 };
 
-/* =========================
-   LOGIN CONTROLLER
-========================= */
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body || {};
@@ -125,9 +120,7 @@ export const userLogin = async (req, res) => {
   }
 };
 
-/* =========================
-   REFRESH TOKEN CONTROLLER
-========================= */
+
 export const refreshAccessToken = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
@@ -156,9 +149,7 @@ export const refreshAccessToken = async (req, res) => {
   }
 };
 
-/* =========================
-   LOGOUT CONTROLLER
-========================= */
+
 
 export const logout = (req,res) =>{
     res.clearCookie("accessToken");

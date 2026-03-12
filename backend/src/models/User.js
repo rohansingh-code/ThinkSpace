@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,      // 🔥 very important
-      lowercase: true,   // 🔥 avoids duplicate emails
+      unique: true,      
+      lowercase: true,  
       trim: true,
     },
     password: {
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }  // 🔥 createdAt & updatedAt
+  { timestamps: true } 
 );
 
 export default mongoose.model("User", userSchema);

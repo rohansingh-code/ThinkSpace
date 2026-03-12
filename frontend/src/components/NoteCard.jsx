@@ -39,7 +39,6 @@ const NoteCard = ({ note, setNotes, setSearch }) => {
 
       <div className="p-5 flex flex-col gap-3">
 
-        {/* Title */}
         <h3
           className="font-semibold text-[15px] leading-snug text-white/90 group-hover:text-yellow-300/90 transition-colors duration-200 line-clamp-2"
           style={{ fontFamily: "'Instrument Serif', serif" }}
@@ -47,7 +46,6 @@ const NoteCard = ({ note, setNotes, setSearch }) => {
           {note.title}
         </h3>
 
-        {/* AI Summary */}
         {hasSummary && (
           <div className="flex items-start gap-1.5">
             <SparklesIcon className="size-3 text-yellow-400/70 mt-0.5 shrink-0" />
@@ -57,12 +55,10 @@ const NoteCard = ({ note, setNotes, setSearch }) => {
           </div>
         )}
 
-        {/* Content */}
         <p className="text-[13px] text-white/50 leading-relaxed line-clamp-3">
           {note.content}
         </p>
 
-        {/* Tags */}
         {hasTags && (
           <div className="flex flex-wrap gap-1.5 pt-1">
             {note.tags.map((tag, i) => (
@@ -77,7 +73,6 @@ const NoteCard = ({ note, setNotes, setSearch }) => {
           </div>
         )}
 
-        {/* Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-yellow-600/10">
           <span className="text-[11px] text-white/25 tracking-wide">
             {formatDate(new Date(note.createdAt))}

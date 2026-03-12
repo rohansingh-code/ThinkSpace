@@ -36,7 +36,7 @@ const CreatePage = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
 
-      {/* Top bar */}
+
       <div className="sticky top-0 z-40 border-b border-yellow-600/20 bg-[#0a0a0a]/80 backdrop-blur-xl">
         <div className="max-w-2xl mx-auto px-5 py-3.5 flex items-center justify-between">
           <Link
@@ -62,10 +62,9 @@ const CreatePage = () => {
         </div>
       </div>
 
-      {/* Form */}
+
       <div className="max-w-2xl mx-auto px-5 py-12">
 
-        {/* AI hint banner */}
         <div className="mb-8 rounded-xl border border-yellow-500/15 bg-yellow-500/[0.05] px-4 py-3 flex items-center gap-3">
           <SparklesIcon className="size-4 text-yellow-400/60 shrink-0" />
           <p className="text-[12px] text-white/35 leading-relaxed">
@@ -75,7 +74,7 @@ const CreatePage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* Title field */}
+
           <div className="space-y-2">
             <label className="text-[11px] uppercase tracking-widest text-yellow-600/50 font-medium">
               Title <span className="normal-case text-white/15">(optional)</span>
@@ -91,7 +90,7 @@ const CreatePage = () => {
             />
           </div>
 
-          {/* Content field */}
+
           <div className="space-y-2">
             <label className="text-[11px] uppercase tracking-widest text-yellow-600/50 font-medium">
               Content <span className="text-red-400/50">*</span>

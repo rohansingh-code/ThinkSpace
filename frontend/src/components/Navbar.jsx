@@ -22,7 +22,6 @@ function Navbar({ search, setSearch }) {
       <div className="mx-auto max-w-6xl px-5 py-3.5">
         <div className="flex items-center justify-between gap-4">
 
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-3 shrink-0 group">
             <div className="size-10 rounded-xl bg-yellow-600/20 border border-yellow-500/30 flex items-center justify-center group-hover:bg-yellow-600/30 transition-colors duration-200">
               <BrainIcon className="size-5 text-yellow-400" />
@@ -32,7 +31,6 @@ function Navbar({ search, setSearch }) {
             </span>
           </Link>
 
-          {/* Search */}
           <div className="relative flex-1 max-w-sm">
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-yellow-600/40" />
             <input
@@ -44,7 +42,6 @@ function Navbar({ search, setSearch }) {
             />
           </div>
 
-          {/* Actions */}
           <div className="flex items-center gap-3 shrink-0">
             <Link
               to="/create"

@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
-// Middleware
+
 if (process.env.NODE_ENV !== "production") {
   app.use(cors({
     origin: "http://localhost:5173",
@@ -24,11 +24,11 @@ if (process.env.NODE_ENV !== "production") {
 app.use(cookieParser());
 app.use(express.json());
 
-// Routes
-app.use("/api/users", userRoutes);          // authLimiter applied inside userRoutes
-app.use("/api/notes", protect, notesRoutes); // apiLimiter/geminiLimiter applied inside notesRoutes
 
-// Production
+app.use("/api/users", userRoutes);          
+app.use("/api/notes", protect, notesRoutes); 
+
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("*", (req, res) => {

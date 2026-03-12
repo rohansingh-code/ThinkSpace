@@ -1,7 +1,7 @@
 import Note from "../models/Note.js";
 import { processNoteWithAI } from "../ai/aiService.js";
 
-// Get all notes
+
 export const getAllNotes = async (req, res) => {
   try {
     const notes = await Note.find({ user: req.user._id }).sort({ createdAt: -1 });
@@ -12,7 +12,7 @@ export const getAllNotes = async (req, res) => {
   }
 };
 
-// Get note by id
+
 export const getNoteById = async (req, res) => {
   try {
     const note = await Note.findOne({
@@ -31,7 +31,7 @@ export const getNoteById = async (req, res) => {
   }
 };
 
-// Create note
+
 export const createNote = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -53,7 +53,7 @@ export const createNote = async (req, res) => {
   }
 };
 
-// Update note
+
 export const updateNote = async (req, res) => {
   try {
     const { content } = req.body;
@@ -85,7 +85,7 @@ export const updateNote = async (req, res) => {
   }
 };
 
-// Delete note
+
 export const deleteNote = async (req, res) => {
   try {
     const deletedNote = await Note.findOneAndDelete({

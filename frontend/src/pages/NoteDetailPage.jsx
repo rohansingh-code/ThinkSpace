@@ -204,7 +204,7 @@ const NoteDetailPage = () => {
           </div>
         )}
 
-        {/* Content */}
+
         {isEditing ? (
           <textarea
             className="w-full bg-white/[0.03] border border-yellow-600/20 rounded-xl p-4 text-[14px] text-white/75 leading-relaxed min-h-[280px] outline-none focus:border-yellow-500/40 transition-colors duration-200 placeholder:text-white/20 resize-none"
@@ -218,7 +218,6 @@ const NoteDetailPage = () => {
           </div>
         )}
 
-        {/* Tags */}
         {!isEditing && hasTags && (
           <div className="mt-10 pt-6 border-t border-yellow-600/10">
             <p className="text-[11px] uppercase tracking-widest text-yellow-600/40 mb-3 font-medium">Tags</p>

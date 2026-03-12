@@ -29,7 +29,7 @@ export const authLimiter = createRateLimiter(
   (req) => req.ip ?? "unknown"
 );
 
-// API & Gemini use userId — auth middleware must run first
+
 export const apiLimiter = createRateLimiter(
   apiRatelimit,
   (req) => `user:${req.user?.id ?? req.ip}`
