@@ -5,10 +5,12 @@ import { formatDate } from '../lib/utils.js';
 import api from '../lib/axios.js';
 import toast from 'react-hot-toast';
 
-const NoteCard = ({ note, setNotes }) => {
+const NoteCard = ({ note, setNotes, setSearch }) => {
+
   const handleDelete = async (e, id) => {
     e.preventDefault();
     if (!window.confirm("Are you sure you want to delete this note?")) return;
+
     try {
       await api.delete(`/notes/${id}`);
       setNotes(prev => prev.filter(note => note._id !== id));
@@ -16,6 +18,12 @@ const NoteCard = ({ note, setNotes }) => {
     } catch {
       toast.error("Failed to delete note");
     }
+  };
+
+  const handleTagClick = (e, tag) => {
+    e.preventDefault();     // prevent link navigation
+    e.stopPropagation();    // stop parent click
+    setSearch(tag);         // update search state
   };
 
   const hasTags = note.tags && note.tags.length > 0;
@@ -27,13 +35,16 @@ const NoteCard = ({ note, setNotes }) => {
       className="note-card group block rounded-2xl border border-white/[0.06] bg-[#111111] hover:bg-[#161616] hover:border-white/[0.12] transition-all duration-300 overflow-hidden"
       style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03)' }}
     >
-      {/* Top accent line */}
+
       <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-violet-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="p-5 flex flex-col gap-3">
 
         {/* Title */}
-        <h3 className="font-semibold text-[15px] leading-snug text-white/90 group-hover:text-white transition-colors duration-200 line-clamp-2" style={{ fontFamily: "'Instrument Serif', serif" }}>
+        <h3
+          className="font-semibold text-[15px] leading-snug text-white/90 group-hover:text-white transition-colors duration-200 line-clamp-2"
+          style={{ fontFamily: "'Instrument Serif', serif" }}
+        >
           {note.title}
         </h3>
 
@@ -47,7 +58,7 @@ const NoteCard = ({ note, setNotes }) => {
           </div>
         )}
 
-        {/* Content preview */}
+        {/* Content */}
         <p className="text-[13px] text-white/55 leading-relaxed line-clamp-3">
           {note.content}
         </p>
@@ -58,7 +69,8 @@ const NoteCard = ({ note, setNotes }) => {
             {note.tags.map((tag, i) => (
               <span
                 key={i}
-                className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide border border-violet-500/20 bg-violet-500/[0.08] text-violet-300/70"
+                onClick={(e) => handleTagClick(e, tag)}
+                className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide border border-violet-500/20 bg-violet-500/[0.08] text-violet-300/70 cursor-pointer hover:bg-violet-500/20"
               >
                 #{tag}
               </span>
@@ -80,6 +92,7 @@ const NoteCard = ({ note, setNotes }) => {
             Delete
           </button>
         </div>
+
       </div>
     </Link>
   );
