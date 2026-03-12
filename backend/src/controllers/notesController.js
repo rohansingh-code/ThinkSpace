@@ -56,7 +56,7 @@ export const createNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
   try {
-    const { content } = req.body;
+    const {title , content } = req.body;
 
     const aiData = await processNoteWithAI(content);
 
@@ -66,7 +66,7 @@ export const updateNote = async (req, res) => {
         user: req.user._id,
       },
       {
-        title: aiData.title || "Untitled",
+        title: title || aiData.title || "Untitled",
         content,
         summary: aiData.summary,
         tags: aiData.tags,
