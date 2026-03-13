@@ -56,9 +56,13 @@ export const createNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
   try {
-    const {title , content } = req.body;
+    const { title, content } = req.body;
 
-    const aiData = await processNoteWithAI(content);
+    let aiData = {};
+
+    if (content) {
+      aiData = await processNoteWithAI(content);
+    }
 
     const updatedNote = await Note.findOneAndUpdate(
       {
@@ -66,7 +70,7 @@ export const updateNote = async (req, res) => {
         user: req.user._id,
       },
       {
-        title: title || aiData.title || "Untitled",
+        title: aiData.title || title || "Untitled",
         content,
         summary: aiData.summary,
         tags: aiData.tags,
@@ -75,13 +79,14 @@ export const updateNote = async (req, res) => {
     );
 
     if (!updatedNote) {
-      return res.status(404).json({ message: "note not found" });
+      return res.status(404).json({ message: "Note not found" });
     }
 
-    return res.status(200).json(updatedNote);
+    res.status(200).json(updatedNote);
+
   } catch (error) {
     console.error("Error in updateNote method", error);
-    return res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
