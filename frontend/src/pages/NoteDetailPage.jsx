@@ -71,10 +71,10 @@ const NoteDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="size-8 rounded-full border-2 border-yellow-500/30 border-t-yellow-500 animate-spin" />
-          <p className="text-[13px] text-white/30">Loading note...</p>
+          <div className="size-8 rounded-full border-2 border-amber-500/30 border-t-amber-500 animate-spin" />
+          <p className="text-[13px] text-zinc-500">Loading note...</p>
         </div>
       </div>
     );
@@ -84,10 +84,10 @@ const NoteDetailPage = () => {
   const hasSummary = note?.summary && note.summary.trim() !== "";
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-transparent">
 
       {/* Top bar */}
-      <div className="sticky top-0 z-40 border-b border-yellow-600/20 bg-[#0a0a0a]/80 backdrop-blur-xl">
+      <div className="sticky top-0 z-40 border-b border-white/5 bg-zinc-950/60 backdrop-blur-2xl">
         <div className="max-w-3xl mx-auto px-5 py-3.5 flex items-center justify-between">
           <Link
             to="/"
@@ -103,15 +103,15 @@ const NoteDetailPage = () => {
                 {/* Copy button */}
                 <button
                   onClick={handleCopy}
-                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-yellow-600/20 bg-white/[0.03] hover:bg-yellow-500/10 text-white/60 hover:text-yellow-300 text-[12px] font-medium transition-all duration-200"
+                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] text-zinc-400 text-[12px] font-medium transition-all duration-200"
                 >
-                  {copied ? <CheckIcon className="size-3 text-yellow-400" /> : <CopyIcon className="size-3" />}
+                  {copied ? <CheckIcon className="size-3 text-emerald-400" /> : <CopyIcon className="size-3" />}
                   {copied ? "Copied!" : "Copy"}
                 </button>
 
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-yellow-600/20 bg-white/[0.03] hover:bg-yellow-500/10 text-white/60 hover:text-yellow-300 text-[12px] font-medium transition-all duration-200"
+                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] text-zinc-400 text-[12px] font-medium transition-all duration-200"
                 >
                   <PencilIcon className="size-3" />
                   Edit
@@ -128,7 +128,7 @@ const NoteDetailPage = () => {
               <>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.07] text-white/50 text-[12px] font-medium transition-all duration-200"
+                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.07] text-zinc-500 text-[12px] font-medium transition-all duration-200"
                 >
                   <XIcon className="size-3" />
                   Cancel
@@ -136,12 +136,12 @@ const NoteDetailPage = () => {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg bg-yellow-600 hover:bg-yellow-500 text-black text-[12px] font-medium transition-all duration-200 disabled:opacity-50"
+                  className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[12px] font-bold transition-all duration-200 disabled:opacity-50"
                 >
                   {saving ? (
-                    <div className="size-3 rounded-full border-2 border-black/30 border-t-black animate-spin" />
+                    <div className="size-3 rounded-full border-2 border-zinc-950/30 border-t-zinc-950 animate-spin" />
                   ) : (
-                    <CheckIcon className="size-3" />
+                    <CheckIcon className="size-3 stroke-[3]" />
                   )}
                   Save
                 </button>
@@ -157,7 +157,7 @@ const NoteDetailPage = () => {
         {/* Title */}
         {isEditing ? (
           <input
-            className="w-full bg-transparent text-3xl font-semibold text-white/90 border-b border-yellow-600/20 pb-3 mb-6 outline-none focus:border-yellow-500/50 transition-colors duration-200 placeholder:text-white/20"
+            className="w-full bg-transparent text-3xl font-semibold text-zinc-100 border-b border-white/10 pb-3 mb-6 outline-none focus:border-amber-500/50 transition-colors duration-200 placeholder:text-zinc-700"
             style={{ fontFamily: "'Instrument Serif', serif" }}
             value={note.title}
             onChange={(e) => setNote({ ...note, title: e.target.value })}
@@ -191,14 +191,14 @@ const NoteDetailPage = () => {
 
         {/* AI Summary */}
         {!isEditing && hasSummary && (
-          <div className="mb-6 rounded-xl border border-yellow-500/15 bg-yellow-500/[0.05] p-4">
+          <div className="mb-6 rounded-xl border border-amber-500/15 bg-amber-500/[0.03] p-4 shadow-inner">
             <div className="flex items-center gap-2 mb-2">
-              <SparklesIcon className="size-3.5 text-yellow-400/70" />
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-yellow-400/60">
+              <SparklesIcon className="size-3.5 text-amber-500/70" />
+              <span className="text-[11px] font-semibold uppercase tracking-widest text-amber-500/60">
                 AI Summary
               </span>
             </div>
-            <p className="text-[13px] text-white/50 leading-relaxed italic">
+            <p className="text-[13px] text-zinc-400 leading-relaxed italic">
               {note.summary}
             </p>
           </div>
@@ -207,25 +207,25 @@ const NoteDetailPage = () => {
 
         {isEditing ? (
           <textarea
-            className="w-full bg-white/[0.03] border border-yellow-600/20 rounded-xl p-4 text-[14px] text-white/75 leading-relaxed min-h-[280px] outline-none focus:border-yellow-500/40 transition-colors duration-200 placeholder:text-white/20 resize-none"
+            className="w-full bg-zinc-900/50 border border-white/5 rounded-xl p-4 text-[14px] text-zinc-300 leading-relaxed min-h-[280px] outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/20 transition-all duration-200 placeholder:text-zinc-600 resize-none shadow-inner"
             value={note.content}
             onChange={(e) => setNote({ ...note, content: e.target.value })}
             placeholder="Write your note..."
           />
         ) : (
-          <div className="text-[14px] text-white/65 leading-relaxed whitespace-pre-wrap">
+          <div className="text-[14.5px] text-zinc-300 leading-relaxed whitespace-pre-wrap">
             {note.content}
           </div>
         )}
 
         {!isEditing && hasTags && (
-          <div className="mt-10 pt-6 border-t border-yellow-600/10">
-            <p className="text-[11px] uppercase tracking-widest text-yellow-600/40 mb-3 font-medium">Tags</p>
+          <div className="mt-10 pt-6 border-t border-white/5">
+            <p className="text-[11px] uppercase tracking-widest text-zinc-600 mb-3 font-medium">Tags</p>
             <div className="flex flex-wrap gap-2">
               {note.tags.map((tag, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-medium tracking-wide border border-yellow-500/20 bg-yellow-500/[0.08] text-yellow-300/60"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-medium tracking-wide border border-amber-500/20 bg-amber-500/[0.05] text-amber-500/80 shadow-sm"
                 >
                   #{tag}
                 </span>

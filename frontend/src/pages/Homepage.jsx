@@ -41,7 +41,7 @@ const Homepage = () => {
   }, [notes, search]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-transparent">
       <Navbar search={search} setSearch={setSearch} />
 
       {isRateLimited && <RateLimitedUI />}
@@ -71,15 +71,15 @@ const Homepage = () => {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-yellow-600/10 bg-[#111100] p-5 space-y-3"
+                className="rounded-2xl border border-white/5 bg-zinc-900/40 p-5 space-y-3"
               >
-                <div className="h-4 w-3/4 rounded-lg bg-yellow-500/[0.06] animate-pulse" />
-                <div className="h-3 w-full rounded-lg bg-yellow-500/[0.04] animate-pulse" />
-                <div className="h-3 w-5/6 rounded-lg bg-yellow-500/[0.04] animate-pulse" />
-                <div className="h-3 w-4/6 rounded-lg bg-yellow-500/[0.03] animate-pulse" />
+                <div className="h-4 w-3/4 rounded-lg bg-zinc-800/80 animate-pulse" />
+                <div className="h-3 w-full rounded-lg bg-zinc-800/50 animate-pulse" />
+                <div className="h-3 w-5/6 rounded-lg bg-zinc-800/50 animate-pulse" />
+                <div className="h-3 w-4/6 rounded-lg bg-zinc-800/50 animate-pulse" />
                 <div className="flex gap-2 pt-2">
-                  <div className="h-5 w-12 rounded-full bg-yellow-500/[0.05] animate-pulse" />
-                  <div className="h-5 w-16 rounded-full bg-yellow-500/[0.05] animate-pulse" />
+                  <div className="h-5 w-12 rounded-full bg-zinc-800/60 animate-pulse" />
+                  <div className="h-5 w-16 rounded-full bg-zinc-800/60 animate-pulse" />
                 </div>
               </div>
             ))}

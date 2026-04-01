@@ -11,8 +11,7 @@
   }
 
   body {
-    background-color: #0a0a0a;
-    color: rgba(212, 175, 55, 0.9);
+    @apply bg-zinc-950 text-amber-500/90 font-sans selection:bg-amber-500/20 selection:text-amber-200;
   }
 
   * {
@@ -28,12 +27,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(212, 175, 55, 0.2);
-    border-radius: 9999px;
+    @apply bg-zinc-800 rounded-full border-2 border-zinc-950;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(212, 175, 55, 0.4);
+    @apply bg-zinc-700;
   }
 }
 
@@ -43,6 +41,7 @@
       opacity: 0;
       transform: translateY(8px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);

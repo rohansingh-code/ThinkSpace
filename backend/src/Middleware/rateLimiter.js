@@ -19,11 +19,10 @@ const createRateLimiter = (limiter, keyFn) => async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Rate limiter error:", error);
-    next(); // Fail open on Redis outage
+    next();
   }
 };
 
-// Auth 
 export const authLimiter = createRateLimiter(
   authRatelimit,
   (req) => req.ip ?? "unknown"
