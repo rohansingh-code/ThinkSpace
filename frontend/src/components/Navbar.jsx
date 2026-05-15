@@ -3,9 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import toast from "react-hot-toast";
 
-function Navbar({ search, setSearch }) {
+function Navbar({ search, setSearch, onSearch }) {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearch();
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -37,7 +43,12 @@ function Navbar({ search, setSearch }) {
               type="text"
               placeholder="Search notes..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSearch(val);
+                if (val === "") onSearch("");
+              }}
+              onKeyDown={handleKeyDown}
               className="w-full h-9 pl-9 pr-4 rounded-xl bg-white/[0.03] border border-white/5 text-[13px] text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/20 transition-all duration-200"
             />
           </div>

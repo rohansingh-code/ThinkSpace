@@ -5,7 +5,7 @@ import { formatDate } from '../lib/utils.js';
 import api from '../lib/axios.js';
 import toast from 'react-hot-toast';
 
-const NoteCard = ({ note, setNotes, setSearch }) => {
+const NoteCard = ({ note, setNotes, setSearch, onTagClick }) => {
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
@@ -23,6 +23,7 @@ const NoteCard = ({ note, setNotes, setSearch }) => {
     e.preventDefault();
     e.stopPropagation();
     setSearch(tag);
+    onTagClick(tag);
   };
 
   const hasTags = note.tags && note.tags.length > 0;

@@ -12,37 +12,34 @@ const Homepage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const res = await api.get("/notes");
-        setNotes(res.data);
-        setIsRateLimited(false);
-      } catch (error) {
-        if (error.response?.status === 429) {
-          setIsRateLimited(true);
-        } else {
-          toast.error("Failed to load notes");
-        }
-      } finally {
-        setLoading(false);
+  const fetchNotes = async (searchTerm = "") => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/notes${searchTerm ? `?search=${encodeURIComponent(searchTerm)}` : ""}`);
+      setNotes(res.data);
+      setIsRateLimited(false);
+    } catch (error) {
+      if (error.response?.status === 429) {
+        setIsRateLimited(true);
+      } else {
+        toast.error("Failed to load notes");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchNotes();
   }, []);
 
-  const filteredNotes = useMemo(() => {
-    if (!search.trim()) return notes;
-    return notes.filter(
-      (note) =>
-        note.title.toLowerCase().includes(search.toLowerCase()) ||
-        note.tags?.some((tag) => tag.toLowerCase().includes(search.toLowerCase()))
-    );
-  }, [notes, search]);
+  const handleSearch = (value) => {
+    fetchNotes(value !== undefined ? value : search);
+  };
 
   return (
     <div className="min-h-screen bg-transparent">
-      <Navbar search={search} setSearch={setSearch} />
+      <Navbar search={search} setSearch={setSearch} onSearch={handleSearch} />
 
       {isRateLimited && <RateLimitedUI />}
 
@@ -58,8 +55,8 @@ const Homepage = () => {
                 {search ? "Search results" : "Your notes"}
               </h2>
               <p className="text-[13px] text-white/30">
-                {filteredNotes.length}{" "}
-                {filteredNotes.length === 1 ? "note" : "notes"}
+                {notes.length}{" "}
+                {notes.length === 1 ? "note" : "notes"}
                 {search && ` for "${search}"`}
               </p>
             </div>
@@ -86,19 +83,24 @@ const Homepage = () => {
           </div>
         )}
 
-        {!loading && filteredNotes.length === 0 && !isRateLimited && (
+        {!loading && notes.length === 0 && !isRateLimited && (
           <NotesNotFound />
         )}
 
-        {!loading && filteredNotes.length > 0 && !isRateLimited && (
+        {!loading && notes.length > 0 && !isRateLimited && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredNotes.map((note, i) => (
+            {notes.map((note, i) => (
               <div
                 key={note._id}
                 className="animate-fade-in"
                 style={{ animationDelay: `${i * 40}ms`, animationFillMode: "both" }}
               >
-                <NoteCard note={note} setNotes={setNotes} setSearch={setSearch} />
+                <NoteCard 
+                  note={note} 
+                  setNotes={setNotes} 
+                  setSearch={setSearch} 
+                  onTagClick={(tag) => fetchNotes(tag)}
+                />
               </div>
             ))}
           </div>
