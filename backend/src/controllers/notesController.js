@@ -4,7 +4,19 @@ import { processNoteWithAI } from "../ai/aiService.js";
 
 export const getAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find({ user: req.user._id }).sort({ createdAt: -1 });
+    const { search } = req.query;
+    let query = { user: req.user._id };
+
+    if (search) {
+      const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      query.$or = [
+        { title: { $regex: safeSearch, $options: "i" } },
+        { content: { $regex: safeSearch, $options: "i" } },
+        { tags: { $in: [new RegExp(safeSearch, "i")] } },
+      ];
+    }
+
+    const notes = await Note.find(query).sort({ createdAt: -1 });
     return res.status(200).json(notes);
   } catch (error) {
     console.error("Error in getAllNotes method", error);
