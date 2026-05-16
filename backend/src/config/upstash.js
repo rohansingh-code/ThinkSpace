@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const redis = Redis.fromEnv();
+export const redis = Redis.fromEnv();
 
 
 export const apiRatelimit = new Ratelimit({
