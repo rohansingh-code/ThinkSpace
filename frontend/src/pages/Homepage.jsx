@@ -91,7 +91,7 @@ const Homepage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {notes.map((note, i) => (
               <div
-                key={note._id}
+                key={note.id}
                 className="animate-fade-in"
                 style={{ animationDelay: `${i * 40}ms`, animationFillMode: "both" }}
               >

@@ -1,7 +1,6 @@
 import express from "express";
 import notesRoutes from "./routes/notesRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import { connectDb } from "./config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
@@ -44,9 +43,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-
-connectDb().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });

@@ -12,7 +12,7 @@ const NoteCard = ({ note, setNotes, setSearch, onTagClick }) => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
     try {
       await api.delete(`/notes/${id}`);
-      setNotes(prev => prev.filter(note => note._id !== id));
+      setNotes(prev => prev.filter(note => note.id !== id));
       toast.success("Note deleted");
     } catch {
       toast.error("Failed to delete note");
@@ -31,7 +31,7 @@ const NoteCard = ({ note, setNotes, setSearch, onTagClick }) => {
 
   return (
     <Link
-      to={`/note/${note._id}`}
+      to={`/note/${note.id}`}
       className="note-card group block rounded-2xl border border-white/5 bg-zinc-900/40 hover:bg-zinc-900/60 transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/10"
     >
 
@@ -79,7 +79,7 @@ const NoteCard = ({ note, setNotes, setSearch, onTagClick }) => {
           </span>
           <button
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 text-[11px] text-zinc-500 hover:text-red-400 px-2 py-1 rounded-lg hover:bg-red-500/10"
-            onClick={(e) => handleDelete(e, note._id)}
+            onClick={(e) => handleDelete(e, note.id)}
           >
             <Trash2Icon className="size-3" />
             Delete
