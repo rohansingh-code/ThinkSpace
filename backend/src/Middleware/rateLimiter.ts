@@ -1,6 +1,12 @@
+import type { Request, Response, NextFunction } from "express";
+import type { Ratelimit } from "@upstash/ratelimit";
 import { apiRatelimit, geminiRatelimit, authRatelimit } from "../config/upstash.js";
+import type { AuthRequest } from "./auth.middleware.js";
 
-const createRateLimiter = (limiter, keyFn) => async (req, res, next) => {
+const createRateLimiter = (
+  limiter: Ratelimit,
+  keyFn: (req: AuthRequest) => string
+) => async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const key = keyFn(req);
     const { success, limit, remaining, reset } = await limiter.limit(key);
@@ -25,16 +31,15 @@ const createRateLimiter = (limiter, keyFn) => async (req, res, next) => {
 
 export const authLimiter = createRateLimiter(
   authRatelimit,
-  (req) => req.ip ?? "unknown"
+  (req: Request) => req.ip ?? "unknown"
 );
-
 
 export const apiLimiter = createRateLimiter(
   apiRatelimit,
-  (req) => `user:${req.user?.id ?? req.ip}`
+  (req: AuthRequest) => `user:${req.user?.id ?? req.ip}`
 );
 
 export const geminiLimiter = createRateLimiter(
   geminiRatelimit,
-  (req) => `user:${req.user?.id ?? req.ip}`
+  (req: AuthRequest) => `user:${req.user?.id ?? req.ip}`
 );

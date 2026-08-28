@@ -1,8 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { AIResult } from "../types/index.js";
 
-export const processNoteWithAI = async (content) => {
+export const processNoteWithAI = async (
+  content: string
+): Promise<AIResult> => {
   try {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash"
@@ -34,10 +37,10 @@ ${content}
 
     const cleaned = text.replace(/```json|```/g, "").trim();
 
-    return JSON.parse(cleaned);
-
+    return JSON.parse(cleaned) as AIResult;
   } catch (error) {
     console.error("AI Error:", error);
+
     return {
       title: "Untitled Note",
       summary: "",
